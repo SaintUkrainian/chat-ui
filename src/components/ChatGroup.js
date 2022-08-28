@@ -51,16 +51,23 @@ const ChatGroup = () => {
           setPrivateChats={setPrivateChats}
           stompClient={stompClient.current}
         />
+        <ul>
+          {privateChats.map((c) => (
+            <li key={c.chatData.chatId}>
+              <button onClick={() => setCurrentChat(c)}>{c.chatWith}</button>
+            </li>
+          ))}
+        </ul>
       </div>
-      <div style={{ margin: "10px" }}>
-        {privateChats.map((c) => (
+      <div>
+        {currentChat === null ? null : (
           <PrivateChat
-            key={c.chatData.chatId}
-            stompClient={c.stompClient}
-            chatData={c.chatData}
-            chatWith={c.chatWith}
+            key={currentChat.chatData.chatId}
+            stompClient={currentChat.stompClient}
+            chatData={currentChat.chatData}
+            chatWith={currentChat.chatWith}
           />
-        ))}
+        )}
       </div>
     </div>
   );

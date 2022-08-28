@@ -23,7 +23,7 @@ const InputMessageForm = (props) => {
           placeholder={"Your message..."}
           onChange={(event) => setInput(event.target.value)}
           value={input}
-          style={{width: "350px"}}
+          style={{width: "350px", height: "30px"}}
         ></input>
         <input type={"submit"} value="Send"></input>
       </form>

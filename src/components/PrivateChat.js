@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import InputMessageForm from "./InputMessageForm";
 
 const PrivateChat = (props) => {
   const [privateMessages, setPrivateMessages] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [subscriptionObject, setSubscriptionObject] = useState(null);
   const stompClient = props.stompClient;
   const chatData = props.chatData;
   const userId = useSelector((state) => state.auth.userId);
@@ -31,6 +32,13 @@ const PrivateChat = (props) => {
     ...commonStyle,
   };
 
+  useEffect(() => {
+    console.log("Fetching chat messages with chat id = " + chatData.chatId);
+    return () => {
+      subscriptionObject.unsubscribe();
+    };
+  }, [chatData.chatId, subscriptionObject]);
+
   const onPrivateMessageReceived = (payload) => {
     setPrivateMessages((prevState) =>
       prevState.concat(JSON.parse(payload.body))
@@ -38,12 +46,13 @@ const PrivateChat = (props) => {
   };
 
   if (!isSubscribed) {
-    stompClient.subscribe(
+    const newSubscription = stompClient.subscribe(
       "/topic/private-chat/" + chatData.chatId,
       onPrivateMessageReceived,
       {}
     );
     setIsSubscribed(true);
+    setSubscriptionObject(newSubscription);
   }
 
   return (
