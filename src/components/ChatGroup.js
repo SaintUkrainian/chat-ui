@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import SockJS from "sockjs-client";
 import { useSelector } from "react-redux";
 import { over } from "stompjs";
 import PrivateChat from "./PrivateChat";
 import CreatePrivateChatForm from "./CreatePrivateChatForm";
+import styles from "./css/ChatGroup.module.css";
 
 const ChatGroup = () => {
   const userId = useSelector((state) => state.auth.userId);
@@ -15,6 +16,10 @@ const ChatGroup = () => {
   const [connected, setConnected] = useState(false);
   const [privateChats, setPrivateChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+
+  useEffect(() => {
+    console.log("Fetching chats by userId = " + userId);
+  });
 
   const onConnected = () => {
     stompClient.current.subscribe(
@@ -51,10 +56,11 @@ const ChatGroup = () => {
           setPrivateChats={setPrivateChats}
           stompClient={stompClient.current}
         />
-        <ul>
+        <h4>Contact list</h4>
+        <ul className={styles.contacts}>
           {privateChats.map((c) => (
             <li key={c.chatData.chatId}>
-              <button onClick={() => setCurrentChat(c)}>{c.chatWith}</button>
+              <button className={styles.contact} onClick={() => setCurrentChat(c)}>{c.chatWith}</button>
             </li>
           ))}
         </ul>

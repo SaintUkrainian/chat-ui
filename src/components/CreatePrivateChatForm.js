@@ -31,7 +31,7 @@ const CreatePrivateChatForm = (props) => {
     <form onSubmit={(event) => createPrivateChat(event)}>
       <input
         type={"text"}
-        placeholder={"Enter user id with whom you wanna chat"}
+        placeholder={"Add a user by username"}
         onChange={(event) => setReceiverId(event.target.value)}
       ></input>
       <input type={"submit"} value={"Create a chat"}></input>

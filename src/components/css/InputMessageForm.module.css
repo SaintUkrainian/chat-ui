@@ -1,0 +1,16 @@
+.input {
+  box-sizing: border-box;
+  flex-basis: 4rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem 0 1.5rem;
+}
+
+.button {
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: lightgray;
+}
