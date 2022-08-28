@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const CreatePrivateChatForm = (props) => {
+import commonStyles from "./css/CommonStyles.module.css";
+
+const AddContactForm = (props) => {
   const [receiverId, setReceiverId] = useState("");
   const userId = useSelector((state) => state.auth.userId);
 
   const createPrivateChat = (event) => {
     event.preventDefault();
+    if (receiverId == "") {
+      return;
+    }
     const chatId = Date.now();
     const newChatData = {
       chatId: chatId,
@@ -25,6 +30,7 @@ const CreatePrivateChatForm = (props) => {
         chatWith: receiverId,
       })
     );
+    setReceiverId("");
   };
 
   return (
@@ -34,9 +40,9 @@ const CreatePrivateChatForm = (props) => {
         placeholder={"Add a user by username"}
         onChange={(event) => setReceiverId(event.target.value)}
       ></input>
-      <input type={"submit"} value={"Create a chat"}></input>
+      <input type={"submit"} value={"Add a contact"} className={commonStyles.actionButton}></input>
     </form>
   );
 };
 
-export default CreatePrivateChatForm;
+export default AddContactForm;

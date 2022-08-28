@@ -1,6 +1,11 @@
 .App {
   text-align: center;
   font-family: 'Red Hat Display';
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: left;
 }
 
 

@@ -3,12 +3,37 @@
   box-sizing: border-box;
   border-radius: 1rem;
 
-  background: white;
-  box-shadow: 0 0 50px #ccc;
+  background: rgb(255, 255, 255, 50%);
+  box-shadow: 0 0 0.25rem #ccc;
+  
+  height: 75%;
+  overflow-y: auto;
+  max-height: fit-content;
 }
 
 .contacts li {
   list-style: none;
+}
+
+.logout {
+  border: none;
+  border-color: #ccc;
+  background-image: none;
+  background-color: rgb(219, 180, 50);
+  padding: 0.5rem 1rem;
+  border-radius: 1.125rem;
+  box-shadow: 0 0 0.25rem #ccc;
+  font-family: Red hat Display, sans-serif;
+  font-weight: 800;
+  height: 2rem;
+  margin: auto;
+  width: 5rem;
+  flex-grow: 0;
+  cursor: pointer;
+}
+
+.logout:hover {
+  background-color: rgb(221, 240, 57);
 }
 
 .contact {
@@ -25,4 +50,23 @@
   font-weight: 800;
   letter-spacing: 0.025em;
   cursor: pointer;
+  margin: 0.2rem;
+}
+
+.noChat {
+  margin: auto;
+  width: 100vh;
+  height: 100%;
+  background: rgb(255, 255, 255, 40%);
+  box-shadow: 0 0 0.25rem #ccc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+  margin-right: 0;
+  width: 100vh;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 1rem;
+  color: black;
 }

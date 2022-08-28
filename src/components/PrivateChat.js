@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import InputMessageForm from "./InputMessageForm";
-import styles from "./css/PrivateChat.module.css"
+import styles from "./css/PrivateChat.module.css";
+import Message from "./Message";
 
 const PrivateChat = (props) => {
   const [privateMessages, setPrivateMessages] = useState([]);
@@ -38,21 +39,14 @@ const PrivateChat = (props) => {
     <div className={styles.chat}>
       <h4>Chat with {props.chatWith}</h4>
       <div className={styles.messages}>
-        {privateMessages.map((m) => {
-          if (m.fromUser === userId) {
-            return (
-              <p key={m.timestamp} className={styles.myMessage}>
-                {m.value}
-              </p>
-            );
-          } else {
-            return (
-              <p key={m.timestamp} className={styles.message}>
-                {m.value}
-              </p>
-            );
-          }
-        })}
+        {privateMessages.map((m) => (
+          <Message
+            key={m.timestamp}
+            text={m.value}
+            fromUser={m.fromUser}
+            isMyMessage={m.fromUser === userId}
+          />
+        ))}
       </div>
       <InputMessageForm
         stompClient={stompClient}

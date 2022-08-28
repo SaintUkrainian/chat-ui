@@ -8,6 +8,10 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.userId = action.payload.userId;
     },
+    unauthenticate(state, action) {
+      state.isAuthenticated = false;
+      state.userId = "";
+    }
   },
 });
 
