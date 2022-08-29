@@ -9,26 +9,17 @@ const AddContactForm = (props) => {
 
   const createPrivateChat = (event) => {
     event.preventDefault();
-    if (receiverId == "") {
+    if (receiverId === "") {
       return;
     }
-    const chatId = Date.now();
     const newChatData = {
-      chatId: chatId,
-      fromUser: userId,
-      toUser: receiverId,
+      fromUserId: userId,
+      toUserId: receiverId,
     };
     props.stompClient.send(
       "/websocket-new-chat",
       {},
       JSON.stringify(newChatData)
-    );
-    props.setPrivateChats((prevState) =>
-      prevState.concat({
-        stompClient: props.stompClient,
-        chatData: newChatData,
-        chatWith: receiverId,
-      })
     );
     setReceiverId("");
   };

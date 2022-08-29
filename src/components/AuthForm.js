@@ -1,16 +1,22 @@
+import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/redux-store";
 import styles from "./css/LoginForm.module.css";
 
-const LoginForm = () => {
+const AuthForm = () => {
   const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
   const handleAuthentication = (event) => {
     event.preventDefault();
-    dispatch(authActions.authenticate({ userId: userName }));
+    axios.post("http://localhost:8080/auth/login", { username: userName, password: password }).then(response => {
+      dispatch(
+        authActions.authenticate(response.data)
+      );
+    });
   };
 
   return (
@@ -26,7 +32,11 @@ const LoginForm = () => {
 
       <div className={styles.signup}>
         <form onSubmit={(event) => event.preventDefault()}>
-          <label className={styles.label} htmlFor={styles.chk} aria-hidden="true">
+          <label
+            className={styles.label}
+            htmlFor={styles.chk}
+            aria-hidden="true"
+          >
             Sign up
           </label>
           <input
@@ -56,7 +66,11 @@ const LoginForm = () => {
 
       <div className={styles.login}>
         <form onSubmit={(event) => handleAuthentication(event)}>
-          <label className={styles.label} htmlFor={styles.chk} aria-hidden="true">
+          <label
+            className={styles.label}
+            htmlFor={styles.chk}
+            aria-hidden="true"
+          >
             Login
           </label>
           <input
@@ -73,6 +87,7 @@ const LoginForm = () => {
             name="pswd"
             placeholder="Password"
             required=""
+            onChange={(event) => setPassword(event.target.value)}
           />
           <button className={styles.button}>Login</button>
         </form>
@@ -81,4 +96,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default AuthForm;

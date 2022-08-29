@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import axios from "axios";
 import SockJS from "sockjs-client";
 import { useSelector, useDispatch } from "react-redux";
 import { over } from "stompjs";
@@ -9,6 +10,7 @@ import { authActions } from "../store/redux-store";
 
 const ChatGroup = () => {
   const userId = useSelector((state) => state.auth.userId);
+  const username = useSelector((state) => state.auth.username);
   const sockJs = useRef(
     new SockJS(`http://localhost:8080/chat?userId=${userId}`)
   );
@@ -18,9 +20,21 @@ const ChatGroup = () => {
   const [connected, setConnected] = useState(false);
   const [privateChats, setPrivateChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
+  const [isPopulatedWithChats, setIsPopulatedWithChats] = useState(false);
 
   useEffect(() => {
-    console.log("Fetching chats by userId = " + userId);
+    if (!isPopulatedWithChats) {
+      console.log("Fetching chats by userId = " + userId);
+      axios.get("http://localhost:8080/chats/" + userId).then((response) => {
+        console.log(response.data);
+        let chats = [];
+        response.data.forEach((element) => {
+          chats.push({ ...element, stompClient: stompClient.current });
+        });
+        setPrivateChats(chats);
+        setIsPopulatedWithChats(true);
+      });
+    }
   });
 
   const onConnected = () => {
@@ -32,11 +46,11 @@ const ChatGroup = () => {
   };
 
   const onNewChatReceived = (payload) => {
+    console.log(payload.body);
     const chatData = JSON.parse(payload.body);
     const newPrivateChat = {
+      ...chatData,
       stompClient: stompClient.current,
-      chatData: chatData,
-      chatWith: chatData.fromUser,
     };
     setPrivateChats((prevState) => prevState.concat(newPrivateChat));
   };
@@ -61,7 +75,7 @@ const ChatGroup = () => {
     >
       <div style={{ margin: "10px" }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <h2>Welcome, {userId}</h2>
+          <h2>Welcome, {username}</h2>
           <button
             onClick={() => dispatch(authActions.unauthenticate())}
             className={styles.logout}
@@ -75,18 +89,18 @@ const ChatGroup = () => {
         />
         <h4 style={{ margin: "10px" }}>Contact list</h4>
         <ul className={styles.contacts}>
-          {privateChats.length == 0 ? (
+          {privateChats.length === 0 ? (
             <li style={{ color: "black", weight: "1000" }}>
               You don't have any contacts yet
             </li>
           ) : (
             privateChats.map((c) => (
-              <li key={c.chatData.chatId}>
+              <li key={c.chatId}>
                 <button
                   className={styles.contact}
                   onClick={() => setCurrentChat(c)}
                 >
-                  {c.chatWith}
+                  {c.chatWithUser.username}
                 </button>
               </li>
             ))
@@ -106,10 +120,8 @@ const ChatGroup = () => {
           </div>
         ) : (
           <PrivateChat
-            key={currentChat.chatData.chatId}
-            stompClient={currentChat.stompClient}
-            chatData={currentChat.chatData}
-            chatWith={currentChat.chatWith}
+            key={currentChat.chatId}
+            chatData={currentChat}
           />
         )}
       </div>

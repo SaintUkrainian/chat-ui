@@ -4,7 +4,7 @@ import styles from "./css/InputMessageForm.module.css";
 
 const InputMessageForm = (props) => {
   const [input, setInput] = useState("");
-  const userId = useSelector((state) => state.auth.userId);
+  const chatData = props.chatData;
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -14,7 +14,11 @@ const InputMessageForm = (props) => {
     props.stompClient.send(
       props.path,
       {},
-      JSON.stringify({ fromUser: userId, value: input })
+      JSON.stringify({
+        fromUser: chatData.user,
+        value: input,
+        chatId: chatData.chatId,
+      })
     );
     setInput("");
   };
@@ -26,7 +30,7 @@ const InputMessageForm = (props) => {
         placeholder={"Your message..."}
         onChange={(event) => setInput(event.target.value)}
         value={input}
-        style={{fontSize: "16px"}}
+        style={{ fontSize: "16px" }}
       ></input>
       <input type={"submit"} value="Send" className={styles.button}></input>
     </form>

@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 import "./App.css";
 import ChatGroup from "./components/ChatGroup";
-import LoginForm from "./components/LoginForm";
+import AuthForm from "./components/AuthForm";
 
 const App = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
-    <div className="App">{isAuthenticated ? <ChatGroup /> : <LoginForm />}</div>
+    <div className="App">{isAuthenticated ? <ChatGroup /> : <AuthForm />}</div>
   );
 };
 

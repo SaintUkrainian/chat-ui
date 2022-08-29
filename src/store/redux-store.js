@@ -2,15 +2,19 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
   name: "auth",
-  initialState: { isAuthenticated: false, userId: "" },
+  initialState: { isAuthenticated: false, username: "", email: "", userId: null },
   reducers: {
     authenticate(state, action) {
       state.isAuthenticated = true;
+      state.username = action.payload.username;
+      state.email = action.payload.email;
       state.userId = action.payload.userId;
     },
     unauthenticate(state, action) {
       state.isAuthenticated = false;
-      state.userId = "";
+      state.username = "";
+      state.email = "";
+      state.userId = null;
     }
   },
 });
