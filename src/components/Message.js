@@ -6,13 +6,23 @@ const Message = (props) => {
     <React.Fragment>
       {props.isMyMessage ? (
         <div className={styles.messageContainerMe}>
-          <p className={styles.myMessage}>{props.text}</p>
-          <p className={styles.me}>{props.fromUser.substring(0,1)}</p>
+          <div className={styles.messageValueMe}>
+            <p className={styles.myMessage}>{props.text}</p>
+            <p className={styles.timestamp}>{props.sendTimestamp}</p>
+          </div>
+          <div>
+            <p className={styles.me}>{props.fromUser.substring(0, 1)}</p>
+          </div>
         </div>
       ) : (
         <div className={styles.messageContainerOtherUser}>
-          <p className={styles.otherUser}>{props.fromUser.substring(0,1)}</p>
-          <p className={styles.message}>{props.text}</p>
+          <div>
+            <p className={styles.otherUser}>{props.fromUser.substring(0, 1)}</p>
+          </div>
+          <div className={styles.messageValueOtherUser}>
+            <p className={styles.message}>{props.text}</p>
+            <p className={styles.timestamp}>{props.sendTimestamp}</p>
+          </div>
         </div>
       )}
     </React.Fragment>

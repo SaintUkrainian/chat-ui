@@ -25,7 +25,7 @@ const PrivateChat = (props) => {
           setIsMessagesFetched(true);
         });
     }
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   });
 
   const onPrivateMessageReceived = (payload) => {
@@ -50,12 +50,13 @@ const PrivateChat = (props) => {
         {privateMessages.map((m) => (
           <Message
             key={m.sendTimestamp}
+            sendTimestamp={m.sendTimestamp}
             text={m.value}
             fromUser={m.fromUser.username}
             isMyMessage={m.fromUser.userId === userId}
           />
         ))}
-        <div ref={messagesEndRef}/>
+        <div ref={messagesEndRef} />
       </div>
       <InputMessageForm
         stompClient={stompClient}
