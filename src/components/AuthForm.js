@@ -12,21 +12,17 @@ const AuthForm = () => {
 
   const handleAuthentication = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:8080/auth/login", { username: userName, password: password }).then(response => {
-      dispatch(
-        authActions.authenticate(response.data)
-      );
-    });
+    axios
+      .post("http://localhost:8080/auth/login", {
+        username: userName,
+        password: password,
+      })
+      .then((response) => {
+        dispatch(authActions.authenticate(response.data));
+      });
   };
 
   return (
-    // <form onSubmit={(event) => handleAuthentication(event)}>
-    //   <input
-    //     placeholder="Enter your name"
-    //     onChange={(event) => setUserName(event.target.value)}
-    //   ></input>
-    //   <input type={"submit"} value="Login"></input>
-    // </form>
     <div className={styles.main}>
       <input type="checkbox" id={styles.chk} aria-hidden="true" />
 
@@ -43,7 +39,7 @@ const AuthForm = () => {
             className={styles.input}
             type="text"
             name="txt"
-            placeholder="User name"
+            placeholder="Username"
             required=""
           />
           <input

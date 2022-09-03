@@ -8,21 +8,24 @@ import Message from "./Message";
 const PrivateChat = (props) => {
   const [privateMessages, setPrivateMessages] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscriptionObject, setSubscriptionObject] = useState(null);
   const [isMessagesFetched, setIsMessagesFetched] = useState(false);
   const chatData = props.chatData;
   const stompClient = chatData.stompClient;
   const userId = useSelector((state) => state.auth.userId);
+  const messagesEndRef = React.createRef();
 
   useEffect(() => {
     if (!isMessagesFetched) {
       console.log("Fetching chat messages with chat id = " + chatData.chatId);
-      axios.get("http://localhost:8080/chat-messages/" + chatData.chatId).then(response => {
-        console.log(response.data);
-        setPrivateMessages(response.data);
-        setIsMessagesFetched(true);
-      });
+      axios
+        .get("http://localhost:8080/chat-messages/" + chatData.chatId)
+        .then((response) => {
+          console.log(response.data);
+          setPrivateMessages(response.data);
+          setIsMessagesFetched(true);
+        });
     }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   });
 
   const onPrivateMessageReceived = (payload) => {
@@ -32,13 +35,12 @@ const PrivateChat = (props) => {
   };
 
   if (!isSubscribed) {
-    const newSubscription = stompClient.subscribe(
+    stompClient.subscribe(
       "/topic/private-chat/" + chatData.chatId,
       onPrivateMessageReceived,
       {}
     );
     setIsSubscribed(true);
-    setSubscriptionObject(newSubscription);
   }
 
   return (
@@ -53,6 +55,7 @@ const PrivateChat = (props) => {
             isMyMessage={m.fromUser.userId === userId}
           />
         ))}
+        <div ref={messagesEndRef}/>
       </div>
       <InputMessageForm
         stompClient={stompClient}

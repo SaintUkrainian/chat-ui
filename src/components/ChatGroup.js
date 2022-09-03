@@ -88,10 +88,11 @@ const ChatGroup = () => {
           stompClient={stompClient.current}
         />
         <h4 style={{ margin: "10px" }}>Contact list</h4>
+        {/* Can be extracted to its own component, e.g. Chats (bellow lines) */}
         <ul className={styles.contacts}>
           {privateChats.length === 0 ? (
             <li style={{ color: "black", weight: "1000" }}>
-              You don't have any contacts yet
+              You don't have any chats yet
             </li>
           ) : (
             privateChats.map((c) => (
@@ -119,10 +120,7 @@ const ChatGroup = () => {
             <h3>No chat selected</h3>
           </div>
         ) : (
-          <PrivateChat
-            key={currentChat.chatId}
-            chatData={currentChat}
-          />
+          <PrivateChat key={currentChat.chatId} chatData={currentChat} />
         )}
       </div>
     </div>

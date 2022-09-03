@@ -31,7 +31,11 @@ const AddContactForm = (props) => {
         placeholder={"Add a user by username"}
         onChange={(event) => setReceiverId(event.target.value)}
       ></input>
-      <input type={"submit"} value={"Add a contact"} className={commonStyles.actionButton}></input>
+      <input
+        type={"submit"}
+        value={"Add a contact"}
+        className={commonStyles.actionButton}
+      ></input>
     </form>
   );
 };
