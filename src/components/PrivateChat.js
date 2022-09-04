@@ -34,10 +34,55 @@ const PrivateChat = (props) => {
     );
   };
 
+  const onEditedMessageReceived = (payload) => {
+    const editedMessage = JSON.parse(payload.body);
+    setPrivateMessages((prevState) =>
+      prevState.map((m) => {
+        if (m.messageId === editedMessage.messageId) {
+          return editedMessage;
+        }
+        return m;
+      })
+    );
+  };
+
+  const onDeleteMessageReceived = (payload) => {
+    const messageToDelete = JSON.parse(payload.body);
+    setPrivateMessages((prevState) =>
+      prevState.filter((m) => m.messageId !== messageToDelete.messageId)
+    );
+  };
+
+  const editMessage = (editedMessage) => {
+    stompClient.send(
+      `/websocket-private-chat/edit-message`,
+      {},
+      JSON.stringify(editedMessage)
+    );
+  };
+
+  const deleteMessage = (messageToDelete) => {
+    stompClient.send(
+      "/websocket-private-chat/delete-message",
+      {},
+      JSON.stringify(messageToDelete)
+    );
+  };
+
   if (!isSubscribed) {
     stompClient.subscribe(
       "/topic/private-chat/" + chatData.chatId,
       onPrivateMessageReceived,
+      {}
+    );
+    stompClient.subscribe(
+      `/topic/private-chat/${chatData.chatId}/edit-message`,
+      onEditedMessageReceived,
+      {}
+    );
+    stompClient.subscribe(
+      `/topic/private-chat/${chatData.chatId}/delete-message`,
+      onDeleteMessageReceived,
       {}
     );
     setIsSubscribed(true);
@@ -50,10 +95,10 @@ const PrivateChat = (props) => {
         {privateMessages.map((m) => (
           <Message
             key={m.sendTimestamp}
-            sendTimestamp={m.sendTimestamp}
-            text={m.value}
-            fromUser={m.fromUser.username}
+            message={m}
             isMyMessage={m.fromUser.userId === userId}
+            editMessage={editMessage}
+            deleteMessage={deleteMessage}
           />
         ))}
         <div ref={messagesEndRef} />

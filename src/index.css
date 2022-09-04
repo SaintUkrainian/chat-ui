@@ -15,14 +15,13 @@ html {
   padding: 0;
 }
 
-input {
+input, textarea, button {
   border: none;
   background-image: none;
   background-color: white;
   padding: 0.5rem 1rem;
   margin-right: 1rem;
   border-radius: 1.125rem;
-  flex-grow: 2;
   box-shadow: 0 0 0.25rem #573b8a;
 
   font-family: Red hat Display, sans-serif;
@@ -30,9 +29,31 @@ input {
   letter-spacing: 0.025em;
 }
 
+input {
+  flex-grow: 1;
+}
+
+textarea {
+  flex-grow: 2;
+}
+
+input:hover, button:hover {
+  background-color: cornsilk;
+  cursor: pointer;
+}
+
+.danger {
+   background-color: rgb(223, 105, 105);
+}
+
+.danger:hover {
+  background-color: red;
+}
+
 button {
   font-family: Red Hat Display, sans-serif;
   font-weight: 600;
+  cursor: pointer;
 }
 
 code {

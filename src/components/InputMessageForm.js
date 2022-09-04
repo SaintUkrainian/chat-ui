@@ -24,13 +24,18 @@ const InputMessageForm = (props) => {
 
   return (
     <form onSubmit={(event) => handleSubmit(event)} className={styles.input}>
-      <input
+      <textarea
         type={"text"}
         placeholder={"Your message..."}
         onChange={(event) => setInput(event.target.value)}
         value={input}
-        style={{ fontSize: "16px" }}
-      ></input>
+        style={{
+          fontSize: "16px",
+          margin: "1rem",
+          maxWidth: "40rem",
+          maxHeight: "10rem",
+        }}
+      ></textarea>
       <input type={"submit"} value="Send" className={styles.button}></input>
     </form>
   );

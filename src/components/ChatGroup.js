@@ -87,7 +87,7 @@ const ChatGroup = () => {
           setPrivateChats={setPrivateChats}
           stompClient={stompClient.current}
         />
-        <h4 style={{ margin: "10px" }}>Contact list</h4>
+        <h4 style={{ margin: "10px" }}>Chats</h4>
         {/* Can be extracted to its own component, e.g. Chats (bellow lines) */}
         <ul className={styles.contacts}>
           {privateChats.length === 0 ? (
