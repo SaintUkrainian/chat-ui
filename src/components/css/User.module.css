@@ -1,0 +1,19 @@
+.user {
+  border: none;
+  border-color: #ccc;
+  background-image: none;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0 1.2rem 1.2rem 0;
+  color: black;
+  box-shadow: 0 0 20px #ccc;
+  width: 15rem;
+  height: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+}
+
+.user:hover {
+    background-color: rgb(195, 233, 243);
+}

@@ -1,6 +1,6 @@
 .navHeader {
   border-radius: 20px;
-  background-color: rgba(235, 50, 112, 0.726);
+  background-color: rgba(0, 110, 255, 0.8);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,7 +9,7 @@
 }
 
 .chatsHeader {
-    background-color: rgba(235, 50, 112, 0.726);
+    background-color: rgba(0, 110, 255, 0.8);
     border-radius: 20px;
     height: 3rem;
     text-align: center;

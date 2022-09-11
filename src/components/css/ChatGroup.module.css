@@ -1,7 +1,7 @@
 .contacts {
   padding: 1rem 2rem 1rem 1rem;
   border-radius: 1rem;
-  background-color: rgba(235, 50, 112, 0.726);
+  background-color: rgba(0, 110, 255, 0.8);
   box-shadow: 0 0 0.25rem #ccc;
   overflow-y: auto;
   height: 100%;

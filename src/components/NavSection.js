@@ -40,7 +40,7 @@ const NavSection = (props) => {
     const chatData = JSON.parse(payload.body);
     const newPrivateChat = {
       ...chatData,
-      stompClient: stompClient.current,
+      stompClient: stompClient,
     };
     setPrivateChats((prevState) => prevState.concat(newPrivateChat));
   };
