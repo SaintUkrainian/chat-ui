@@ -5,14 +5,21 @@ html {
   line-height: 1.25em;
   letter-spacing: 0.025em;
   color: white;
-  background: #f7f7f7;
   height: 100%;
   width: auto;
-  background-color: #7a41e2ea;
+  background-image: url("../public/background-img.jpg");
+  background-size: cover;
+  /* background-image: -webkit-gradient(linear,
+									   left bottom,
+									   left top,
+									   color-stop(0.44, rgb(167, 26, 223)),
+									   color-stop(0.72, rgb(118, 6, 133)),
+									   color-stop(0.86, rgb(58, 6, 82))); */
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0;
+  margin: 0;
 }
 
 input, textarea, button {
@@ -37,9 +44,13 @@ textarea {
   flex-grow: 2;
 }
 
-input:hover, button:hover {
-  background-color: cornsilk;
+button:hover {
+  background-color: rgb(236, 113, 150);
   cursor: pointer;
+}
+
+input::placeholder, textarea::placeholder {
+  color: black;
 }
 
 .danger {

@@ -5,6 +5,25 @@
   overflow-y: auto;
   height: 80%;
   font-size: 20px;
+  border-radius: 10px;
+  scrollbar-width: thin;
+  scrollbar-highlight-color: purple;
+}
+
+.messages::-webkit-scrollbar-track {
+	border-radius: 20px;
+}
+.messages::-webkit-scrollbar {
+  width: 10px;
+}
+.messages::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+	background-image: -webkit-gradient(linear,
+									   left bottom,
+									   left top,
+									   color-stop(0.44, rgb(136, 12, 185)),
+									   color-stop(0.72, rgb(118, 6, 133)),
+									   color-stop(0.86, rgb(134, 8, 128)));
 }
 
 .chat {
@@ -16,7 +35,6 @@
   height: 100%;
   box-sizing: border-box;
   border-radius: 1rem;
-  color: black;
-  background: rgb(255, 255, 255, 40%);
+  background: rgba(78, 32, 202, 0.4);
   box-shadow: 0 0 0.25rem #ccc;
 }

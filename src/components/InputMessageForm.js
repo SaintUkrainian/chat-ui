@@ -36,7 +36,7 @@ const InputMessageForm = (props) => {
           maxHeight: "10rem",
         }}
       ></textarea>
-      <input type={"submit"} value="Send" className={styles.button}></input>
+      <input type={"submit"} value="Send" className={styles.btn}></input>
     </form>
   );
 };
