@@ -14,7 +14,8 @@ const NavSection = (props) => {
   const userId = useSelector((state) => state.auth.userId);
   const [privateChats, setPrivateChats] = useState([]);
   const [isPopulatedWithChats, setIsPopulatedWithChats] = useState(false);
-  const username = useSelector((state) => state.auth.username);
+  const firstName = useSelector((state) => state.auth.firstName);
+  const lastName = useSelector((state) => state.auth.lastName);
 
   useEffect(() => {
     if (!isPopulatedWithChats) {
@@ -32,6 +33,7 @@ const NavSection = (props) => {
   });
 
   const onConnected = () => {
+    console.log("Successfuly connected!");
     stompClient.subscribe("/topic/new-chat/" + userId, onNewChatReceived, {});
   };
 
@@ -57,8 +59,10 @@ const NavSection = (props) => {
   return (
     <div className={navStyles.navSection}>
       <div className={navStyles.navHeader}>
-        <div style={{display: "flex"}}>
-          <h2 style={{margin: "1rem"}}>Welcome, {username}</h2>
+        <div style={{ display: "flex" }}>
+          <h2 style={{ margin: "0.7rem", padding: "0" }}>
+            {firstName} {lastName}
+          </h2>
           <button
             onClick={() => dispatch(authActions.unauthenticate())}
             className={styles.logout}
@@ -74,7 +78,7 @@ const NavSection = (props) => {
       <h4 className={navStyles.chatsHeader}>Chats</h4>
       <ul className={styles.contacts}>
         {privateChats.length === 0 ? (
-          <li style={{ color: "black", weight: "1000" }}>
+          <li style={{ color: "white", weight: "1000" }}>
             You don't have any chats yet
           </li>
         ) : (

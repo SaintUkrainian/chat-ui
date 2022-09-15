@@ -7,8 +7,9 @@ const User = (props) => {
 
   return (
     <div onClick={() => props.createPrivateChat(user)} className={styles.user}>
-      <h4 style={{margin: "0"}}>{user.username}</h4>
-      <p style={{margin: "0", fontWeight:"300"}}>{user.email}</p>
+      <h4 style={{margin: "0"}}>{user.firstName} {user.lastName}</h4>
+      <p style={{margin: "0", fontWeight:"300"}}>Username: @{user.username}</p>
+      <p style={{margin: "0", fontWeight:"300"}}>Email: {user.email}</p>
     </div>
   );
 };

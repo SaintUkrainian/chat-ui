@@ -6,16 +6,34 @@ import { authActions } from "../store/redux-store";
 import styles from "./css/LoginForm.module.css";
 
 const AuthForm = () => {
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const dispatch = useDispatch();
 
-  const handleAuthentication = (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
     axios
       .post("http://localhost:8080/auth/login", {
-        username: userName,
+        username: username,
         password: password,
+      })
+      .then((response) => {
+        dispatch(authActions.authenticate(response.data));
+      });
+  };
+
+  const handleRegistration = (event) => {
+    event.preventDefault();
+    axios
+      .post("http://localhost:8080/auth/register", {
+        username: username,
+        password: password,
+        firstName: firstName,
+        lastName: lastName,
+        email: email
       })
       .then((response) => {
         dispatch(authActions.authenticate(response.data));
@@ -25,9 +43,8 @@ const AuthForm = () => {
   return (
     <div className={styles.main}>
       <input type="checkbox" id={styles.chk} aria-hidden="true" />
-
       <div className={styles.signup}>
-        <form onSubmit={(event) => event.preventDefault()}>
+        <form onSubmit={(event) => handleRegistration(event)}>
           <label
             className={styles.label}
             htmlFor={styles.chk}
@@ -39,8 +56,25 @@ const AuthForm = () => {
             className={styles.input}
             type="text"
             name="txt"
+            placeholder="First Name"
+            required=""
+            onChange={(event) => setFirstName(event.target.value)}
+          />
+          <input
+            className={styles.input}
+            type="text"
+            name="txt"
+            placeholder="Last Name"
+            required=""
+            onChange={(event) => setLastName(event.target.value)}
+          />
+          <input
+            className={styles.input}
+            type="text"
+            name="txt"
             placeholder="Username"
             required=""
+            onChange={(event) => setUsername(event.target.value)}
           />
           <input
             className={styles.input}
@@ -48,6 +82,7 @@ const AuthForm = () => {
             name="email"
             placeholder="Email"
             required=""
+            onChange={(event) => setEmail(event.target.value)}
           />
           <input
             className={styles.input}
@@ -55,13 +90,14 @@ const AuthForm = () => {
             name="pswd"
             placeholder="Password"
             required=""
+            onChange={(event) => setPassword(event.target.value)}
           />
           <button className={styles.button}>Sign up</button>
         </form>
       </div>
 
       <div className={styles.login}>
-        <form onSubmit={(event) => handleAuthentication(event)}>
+        <form onSubmit={(event) => handleLogin(event)}>
           <label
             className={styles.label}
             htmlFor={styles.chk}
@@ -73,8 +109,8 @@ const AuthForm = () => {
             className={styles.input}
             type="text"
             name="txt"
-            placeholder="Username"
-            onChange={(event) => setUserName(event.target.value)}
+            placeholder="username"
+            onChange={(event) => setUsername(event.target.value)}
             required=""
           />
           <input
