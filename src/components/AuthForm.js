@@ -4,39 +4,67 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store/redux-store";
 import styles from "./css/LoginForm.module.css";
+import commonStyles from "./css/CommonStyles.module.css";
 
+const BASE_AUTH_URL = "http://localhost:8081/auth"
+const LOGIN_URL = BASE_AUTH_URL + "/login";
+const REGISTER_URL = BASE_AUTH_URL + "/register";
 const AuthForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [loginFailed, setLoginFailed] = useState({
+    isFailed: false,
+    message: null,
+  });
+  const [registrationFailed, setRegistrationFailed] = useState({
+    isFailed: false,
+    message: null,
+  });
   const dispatch = useDispatch();
+
+  const errorInputStyle = {
+    backgroundColor: "lightcoral",
+  };
 
   const handleLogin = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:8080/auth/login", {
+      .post(LOGIN_URL, {
         username: username,
         password: password,
       })
       .then((response) => {
         dispatch(authActions.authenticate(response.data));
+      })
+      .catch((error) => {
+        setLoginFailed({
+          isFailed: true,
+          message: error.response.data.message,
+        });
       });
   };
 
   const handleRegistration = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:8080/auth/register", {
+      .post(REGISTER_URL, {
         username: username,
         password: password,
         firstName: firstName,
         lastName: lastName,
-        email: email
+        email: email,
       })
       .then((response) => {
         dispatch(authActions.authenticate(response.data));
+      })
+      .catch((error) => {
+        setRegistrationFailed({
+          isFailed: true,
+          message: error.response.data.message,
+        });
       });
   };
 
@@ -52,6 +80,9 @@ const AuthForm = () => {
           >
             Sign up
           </label>
+          {registrationFailed.isFailed ? (
+            <p className={commonStyles.error}>{registrationFailed.message}</p>
+          ) : null}
           <input
             className={styles.input}
             type="text"
@@ -70,6 +101,7 @@ const AuthForm = () => {
           />
           <input
             className={styles.input}
+            style={registrationFailed.isFailed ? errorInputStyle : null}
             type="text"
             name="txt"
             placeholder="Username"
@@ -78,6 +110,7 @@ const AuthForm = () => {
           />
           <input
             className={styles.input}
+            style={registrationFailed.isFailed ? errorInputStyle : null}
             type="email"
             name="email"
             placeholder="Email"
@@ -105,16 +138,21 @@ const AuthForm = () => {
           >
             Login
           </label>
+          {loginFailed.isFailed ? (
+            <p className={commonStyles.error}>{loginFailed.message}</p>
+          ) : null}
           <input
             className={styles.input}
+            style={loginFailed.isFailed ? errorInputStyle : null}
             type="text"
             name="txt"
-            placeholder="username"
+            placeholder="Username"
             onChange={(event) => setUsername(event.target.value)}
             required=""
           />
           <input
             className={styles.input}
+            style={loginFailed.isFailed ? errorInputStyle : null}
             type="password"
             name="pswd"
             placeholder="Password"

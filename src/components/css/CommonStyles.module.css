@@ -16,5 +16,15 @@
 }
 
 .actionButton:hover {
-    background-color: bisque;
+  background-color: bisque;
+}
+
+.error {
+  color: rgb(241, 75, 75);
+  font-weight: bold;
+  background-color: white;
+  width: fit-content;
+  margin: auto;
+  padding: 0.3rem;
+  border-radius: 10px;
 }
