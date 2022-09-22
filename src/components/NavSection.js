@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import SockJS from "sockjs-client";
+import { over } from "stompjs";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/redux-store";
 import AddContactForm from "./AddContactForm";
+import ChatLink from "./ChatLink";
 
 import styles from "./css/ChatGroup.module.css";
 import navStyles from "./css/NavSection.module.css";
 
 const NavSection = (props) => {
+  const notificationSockJs = useRef(
+    new SockJS(`http://localhost:8082/chat-notifications`)
+  );
+  const notificationStompClient = useRef(over(notificationSockJs.current));
+
   const dispatch = useDispatch();
   const stompClient = props.stompClient;
+  const [notificationConnected, setNotificationsConnected] = useState(false);
   const [connected, setConnected] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
   const [privateChats, setPrivateChats] = useState([]);
@@ -53,6 +62,13 @@ const NavSection = (props) => {
 
   if (!connected) {
     stompClient.connect({}, onConnected, onConnectionFailed);
+    notificationStompClient.current.connect(
+      {},
+      () => setNotificationsConnected(true),
+      (error) => {
+        console.log(error);
+      }
+    );
     setConnected(true);
   }
 
@@ -81,17 +97,17 @@ const NavSection = (props) => {
           <li style={{ color: "white", weight: "1000" }}>
             You don't have any chats yet
           </li>
-        ) : (
+        ) : notificationConnected ? (
           privateChats.map((c) => (
-            <li key={c.chatId}>
-              <button
-                className={styles.contact}
-                onClick={() => props.setCurrentChat(c)}
-              >
-                {c.chatWithUser.username}
-              </button>
-            </li>
+            <ChatLink
+              key={c.chatId}
+              setCurrentChat={props.setCurrentChat}
+              chat={c}
+              notificationStompClient={notificationStompClient.current}
+            />
           ))
+        ) : (
+          <li style={{ color: "white", weight: "1000" }}>Connection failed</li>
         )}
       </ul>
     </div>

@@ -1,5 +1,5 @@
 .contacts {
-  padding: 1rem 2rem 1rem 1rem;
+  padding: 1rem 1rem 1rem 1rem;
   border-radius: 1rem;
   background-color: rgba(0, 110, 255, 0.8);
   box-shadow: 0 0 0.25rem #ccc;
@@ -39,15 +39,25 @@
   background-color: white;
   padding: 0.5rem 1rem;
   border-radius: 1.125rem;
-  flex-grow: 2;
   box-shadow: 0 0 20px #ccc;
-  width: 100%;
+  width: 15rem;
   height: 3rem;
-  font-family: Red hat Display, sans-serif;
-  font-weight: 800;
   letter-spacing: 0.025em;
   cursor: pointer;
   margin: 0.2rem;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-x: auto;
+}
+
+.contact p {
+  color: rgb(141, 141, 141);
+}
+
+.contact:hover {
+  background-color: rgb(226, 226, 226);
 }
 
 .noChat {
