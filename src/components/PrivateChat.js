@@ -4,11 +4,13 @@ import { useSelector } from "react-redux";
 import InputMessageForm from "./InputMessageForm";
 import styles from "./css/PrivateChat.module.css";
 import Message from "./Message";
+import Typing from "./Typing";
 
 const PrivateChat = (props) => {
   const [privateMessages, setPrivateMessages] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isMessagesFetched, setIsMessagesFetched] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const chatData = props.chatData;
   const stompClient = chatData.stompClient;
   const userId = useSelector((state) => state.auth.userId);
@@ -69,6 +71,15 @@ const PrivateChat = (props) => {
     );
   };
 
+  const onTypingEventReceived = (payload) => {
+    const typingEvent = JSON.parse(payload.body);
+    if (typingEvent.eventValue === "STARTED_TYPING") {
+      setIsTyping(true);
+    } else if (typingEvent.eventValue === "STOPPED_TYPING") {
+      setIsTyping(false);
+    }
+  }
+
   if (!isSubscribed) {
     stompClient.subscribe(
       "/topic/private-chat/" + chatData.chatId,
@@ -83,6 +94,11 @@ const PrivateChat = (props) => {
     stompClient.subscribe(
       `/topic/private-chat/${chatData.chatId}/delete-message`,
       onDeleteMessageReceived,
+      {}
+    );
+    stompClient.subscribe(
+      `/topic/private-chat/${chatData.chatId}/typing/${chatData.chatWithUser.userId}`,
+      onTypingEventReceived,
       {}
     );
     setIsSubscribed(true);
@@ -102,6 +118,11 @@ const PrivateChat = (props) => {
           />
         ))}
         <div ref={messagesEndRef} />
+        {isTyping ? (
+          <div style={{ display: "flex", justifyContent: "left" }}>
+            <Typing />
+          </div>
+        ) : null}
       </div>
       <InputMessageForm
         stompClient={stompClient}
