@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { setInterval } from "stompjs";
 import styles from "./css/InputMessageForm.module.css";
 
 const InputMessageForm = (props) => {

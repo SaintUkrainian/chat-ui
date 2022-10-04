@@ -40,8 +40,14 @@ const ChatLink = (props) => {
 
   return (
     <li onClick={() => props.setCurrentChat(chat)} className={styles.contact}>
-      <h4 style={{margin: "0", fontWeight: "900"}}>{chat.chatWithUser.firstName} {chat.chatWithUser.lastName}</h4>
-      <p style={{margin: "0", fontWeight:"200"}}>{latestMessage}</p>
+      <h4 style={{ margin: "0", fontWeight: "900" }}>
+        {chat.chatWithUser.firstName} {chat.chatWithUser.lastName}
+      </h4>
+      <p style={{ margin: "0", fontWeight: "200" }}>
+        {latestMessage && latestMessage.length > 20
+          ? latestMessage.substring(0, 20) + "..."
+          : latestMessage}
+      </p>
     </li>
   );
 };

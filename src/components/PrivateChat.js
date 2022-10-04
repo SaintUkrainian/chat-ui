@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import InputMessageForm from "./InputMessageForm";
 import styles from "./css/PrivateChat.module.css";
 import Message from "./Message";
 import Typing from "./Typing";
 
 const PrivateChat = (props) => {
+  const [parent] = useAutoAnimate();
   const [privateMessages, setPrivateMessages] = useState([]);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isMessagesFetched, setIsMessagesFetched] = useState(false);
@@ -78,7 +80,7 @@ const PrivateChat = (props) => {
     } else if (typingEvent.eventValue === "STOPPED_TYPING") {
       setIsTyping(false);
     }
-  }
+  };
 
   if (!isSubscribed) {
     stompClient.subscribe(
@@ -107,7 +109,7 @@ const PrivateChat = (props) => {
   return (
     <div className={styles.chat}>
       <h4>Chat with {chatData.chatWithUser.username}</h4>
-      <div className={styles.messages}>
+      <div className={styles.messages} ref={parent}>
         {privateMessages.map((m) => (
           <Message
             key={m.sendTimestamp}
@@ -118,11 +120,9 @@ const PrivateChat = (props) => {
           />
         ))}
         <div ref={messagesEndRef} />
-        {isTyping ? (
-          <div style={{ display: "flex", justifyContent: "left" }}>
-            <Typing />
-          </div>
-        ) : null}
+        <div style={{ display: "flex", justifyContent: "left" }}>
+          {isTyping ? <Typing /> : null}
+        </div>
       </div>
       <InputMessageForm
         stompClient={stompClient}

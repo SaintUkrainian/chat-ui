@@ -4,6 +4,7 @@ import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../store/redux-store";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import AddContactForm from "./AddContactForm";
 import ChatLink from "./ChatLink";
 
@@ -17,6 +18,7 @@ const NavSection = (props) => {
   const notificationStompClient = useRef(over(notificationSockJs.current));
 
   const dispatch = useDispatch();
+  const [parent] = useAutoAnimate();
   const stompClient = props.stompClient;
   const [notificationConnected, setNotificationsConnected] = useState(false);
   const [connected, setConnected] = useState(false);
@@ -92,7 +94,7 @@ const NavSection = (props) => {
         />
       </div>
       <h4 className={navStyles.chatsHeader}>Chats</h4>
-      <ul className={styles.contacts}>
+      <ul className={styles.contacts} ref={parent}>
         {privateChats.length === 0 ? (
           <li style={{ color: "white", weight: "1000" }}>
             You don't have any chats yet

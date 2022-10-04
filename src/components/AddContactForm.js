@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useSelector } from "react-redux";
 
 import styles from "./css/AddContactForm.module.css";
@@ -9,12 +10,13 @@ import User from "./User";
 const AddContactForm = (props) => {
   const [searchString, setSearchString] = useState("");
   const [users, setUsers] = useState(null);
+  const [parent] = useAutoAnimate({duration: 200});
   const [isReadyToFind, setIsReadyToFind] = useState(false);
   const userId = useSelector((state) => state.auth.userId);
 
   useEffect(() => {
     let timeout = null;
-    if (isReadyToFind) {
+    if (isReadyToFind && searchString !== "") {
       timeout = setTimeout(() => {
         axios
           .post("http://localhost:8080/users", {
@@ -25,7 +27,7 @@ const AddContactForm = (props) => {
             setUsers(response.data);
             setIsReadyToFind(false);
           });
-      }, 500);
+      }, 300);
     } else {
       if (searchString === "") {
         setIsReadyToFind(false);
@@ -73,7 +75,7 @@ const AddContactForm = (props) => {
   };
 
   return (
-    <div className={styles.addContactSection}>
+    <div className={styles.addContactSection} ref={parent}>
       <input
         type={"text"}
         placeholder={"Find someone"}
