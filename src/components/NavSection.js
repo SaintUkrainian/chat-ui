@@ -10,6 +10,7 @@ import ChatLink from "./ChatLink";
 
 import styles from "./css/ChatGroup.module.css";
 import navStyles from "./css/NavSection.module.css";
+import Spinner from "./Spinner";
 
 const NavSection = (props) => {
   const notificationSockJs = useRef(
@@ -68,10 +69,36 @@ const NavSection = (props) => {
       {},
       () => setNotificationsConnected(true),
       (error) => {
-        console.log(error);
+        setNotificationsConnected(null);
       }
     );
     setConnected(true);
+  }
+
+  let chatData = null;
+  if (!isPopulatedWithChats) {
+    chatData = <Spinner />;
+  } else if (isPopulatedWithChats) {
+    if (privateChats.length === 0) {
+      chatData = (
+        <li style={{ color: "white", weight: "1000" }}>
+          You don't have any chats yet
+        </li>
+      );
+    } else if (notificationConnected) {
+      chatData = privateChats.map((c) => (
+        <ChatLink
+          key={c.chatId}
+          setCurrentChat={props.setCurrentChat}
+          chat={c}
+          notificationStompClient={notificationStompClient.current}
+        />
+      ));
+    } else if (notificationConnected == null) {
+      chatData = (
+        <li style={{ color: "white", weight: "1000" }}>Connection failed</li>
+      );
+    }
   }
 
   return (
@@ -95,22 +122,7 @@ const NavSection = (props) => {
       </div>
       <h4 className={navStyles.chatsHeader}>Chats</h4>
       <ul className={styles.contacts} ref={parent}>
-        {privateChats.length === 0 ? (
-          <li style={{ color: "white", weight: "1000" }}>
-            You don't have any chats yet
-          </li>
-        ) : notificationConnected ? (
-          privateChats.map((c) => (
-            <ChatLink
-              key={c.chatId}
-              setCurrentChat={props.setCurrentChat}
-              chat={c}
-              notificationStompClient={notificationStompClient.current}
-            />
-          ))
-        ) : (
-          <li style={{ color: "white", weight: "1000" }}>Connection failed</li>
-        )}
+        {chatData}
       </ul>
     </div>
   );

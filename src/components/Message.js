@@ -48,7 +48,7 @@ const Message = (props) => {
         </div>
         <div>
           <p className={styles.me}>
-            {message.fromUser.username.substring(0, 1)}
+            {message.fromUser.firstName.substring(0, 1)}
           </p>
         </div>
       </div>
@@ -56,7 +56,7 @@ const Message = (props) => {
       <div className={styles.messageContainerOtherUser}>
         <div>
           <p className={styles.otherUser}>
-            {message.fromUser.username.substring(0, 1)}
+            {message.fromUser.firstName.substring(0, 1)}
           </p>
         </div>
         <div className={styles.messageValueOtherUser}>
@@ -105,7 +105,7 @@ const Message = (props) => {
         </div>
         <div>
           <p className={styles.me}>
-            {message.fromUser.username.substring(0, 1)}
+            {message.fromUser.firstName.substring(0, 1)}
           </p>
         </div>
       </div>
