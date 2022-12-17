@@ -33,8 +33,7 @@
 }
 
 .contact {
-  border: none;
-  border-color: #ccc;
+  border: none #ccc;
   background-image: none;
   background-color: white;
   padding: 0.5rem 1rem;
@@ -61,7 +60,6 @@
 }
 
 .noChat {
-  margin: auto;
   width: 100vh;
   height: 100%;
   background: rgba(78, 32, 202, 0.4);
@@ -69,11 +67,22 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: auto;
-  margin-right: 0;
-  width: 100vh;
-  height: 100%;
+  margin: auto 0 auto auto;
   box-sizing: border-box;
   border-radius: 1rem;
   color: white;
+}
+
+.badge {
+  box-sizing: border-box;
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  padding-top: 0.125rem;
+  border-radius: 1rem;
+  background: lightblue;
+  color: darkblue;
+  margin-left: 2pt;
 }

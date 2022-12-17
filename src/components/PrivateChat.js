@@ -13,6 +13,9 @@ const PrivateChat = (props) => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isMessagesFetched, setIsMessagesFetched] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [isCompanionOnline, setIsCompanionOnline] = useState(null);
+  const [hasCompanionConfirmed, setHasCompanionConfirmed] = useState(false);
+  const [chatSubsrcriptions, setChatSubscriptions] = useState([]);
   const chatData = props.chatData;
   const stompClient = chatData.stompClient;
   const userId = useSelector((state) => state.auth.userId);
@@ -27,10 +30,27 @@ const PrivateChat = (props) => {
           console.log(response.data);
           setPrivateMessages(response.data);
           setIsMessagesFetched(true);
+          stompClient.send(
+            `/websocket-private-chat/messages-seen`,
+            {},
+            JSON.stringify({ chatId: chatData.chatId, userId: userId })
+          );
+          stompClient.send(
+            `/topic/private-chat/${chatData.chatId}/companion-online/${userId}`,
+            {},
+            JSON.stringify({ value: "COMPANION_ONLINE" })
+          );
         });
     }
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  });
+    return () => {
+      stompClient.send(
+        `/topic/private-chat/${chatData.chatId}/companion-online/${userId}`,
+        {},
+        JSON.stringify({ value: "COMPANION_OFFLINE" })
+      );
+      chatSubsrcriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, [chatData.chatId]);
 
   const onPrivateMessageReceived = (payload) => {
     setPrivateMessages((prevState) =>
@@ -82,33 +102,99 @@ const PrivateChat = (props) => {
     }
   };
 
+  const onCompanionOnlineEventReceived = (payload) => {
+    const event = JSON.parse(payload.body);
+    console.log(event);
+    if (event.value === "COMPANION_ONLINE") {
+      setIsCompanionOnline(true);
+    } else if (event.value === "COMPANION_OFFLINE") {
+      setIsCompanionOnline(false);
+      setHasCompanionConfirmed(false);
+    }
+    stompClient.send(
+      `/topic/private-chat/${chatData.chatId}/confirmation/${chatData.chatWithUser.userId}`,
+      {},
+      JSON.stringify({ value: "MESSAGE_RECEIVED" })
+    );
+  };
+
+  const onConfirmationReceived = (payload) => {
+    const event = JSON.parse(payload.body);
+    console.log(event);
+    if (event.value === "MESSAGE_RECEIVED") {
+      setHasCompanionConfirmed(true);
+    }
+  };
+
   if (!isSubscribed) {
-    stompClient.subscribe(
-      "/topic/private-chat/" + chatData.chatId,
-      onPrivateMessageReceived,
-      {}
+    const subscriptions = [];
+
+    subscriptions.push(
+      stompClient.subscribe(
+        "/topic/private-chat/" + chatData.chatId,
+        onPrivateMessageReceived,
+        {}
+      ),
+      stompClient.subscribe(
+        `/topic/private-chat/${chatData.chatId}/edit-message`,
+        onEditedMessageReceived,
+        {}
+      ),
+      stompClient.subscribe(
+        `/topic/private-chat/${chatData.chatId}/delete-message`,
+        onDeleteMessageReceived,
+        {}
+      ),
+      stompClient.subscribe(
+        `/topic/private-chat/${chatData.chatId}/typing/${chatData.chatWithUser.userId}`,
+        onTypingEventReceived,
+        {}
+      ),
+      stompClient.subscribe(
+        `/topic/private-chat/${chatData.chatId}/companion-online/${chatData.chatWithUser.userId}`,
+        onCompanionOnlineEventReceived,
+        {}
+      ),
+      stompClient.subscribe(
+        `/topic/private-chat/${chatData.chatId}/confirmation/${userId}`,
+        onConfirmationReceived,
+        {}
+      )
     );
-    stompClient.subscribe(
-      `/topic/private-chat/${chatData.chatId}/edit-message`,
-      onEditedMessageReceived,
-      {}
-    );
-    stompClient.subscribe(
-      `/topic/private-chat/${chatData.chatId}/delete-message`,
-      onDeleteMessageReceived,
-      {}
-    );
-    stompClient.subscribe(
-      `/topic/private-chat/${chatData.chatId}/typing/${chatData.chatWithUser.userId}`,
-      onTypingEventReceived,
-      {}
-    );
+
+    setChatSubscriptions(subscriptions);
+
     setIsSubscribed(true);
   }
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  });
+
+  useEffect(() => {
+    let interval = null;
+    if (!isCompanionOnline || !hasCompanionConfirmed) {
+      interval = setInterval(() => {
+        stompClient.send(
+          `/topic/private-chat/${chatData.chatId}/companion-online/${userId}`,
+          {},
+          JSON.stringify({ value: "COMPANION_ONLINE" })
+        );
+      }, 3000);
+    } else {
+      interval = null;
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  });
+
   return (
     <div className={styles.chat}>
-      <h4>Chat with {chatData.chatWithUser.username}</h4>
+      <h4>
+        Chat with {chatData.chatWithUser.firstName}{" "}
+        {chatData.chatWithUser.lastName}
+      </h4>
       <div className={styles.messages} ref={parent}>
         {privateMessages.map((m) => (
           <Message
@@ -128,6 +214,7 @@ const PrivateChat = (props) => {
         stompClient={stompClient}
         path={"/websocket-private-chat"}
         chatData={chatData}
+        isCompanionOnline={isCompanionOnline}
       />
     </div>
   );

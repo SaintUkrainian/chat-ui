@@ -37,6 +37,7 @@ const InputMessageForm = (props) => {
     if (input === "") {
       return;
     }
+    console.log("IS_COMPNAION_ONLINE", props.isCompanionOnline);
     stompClient.send(
       props.path,
       {},
@@ -44,6 +45,7 @@ const InputMessageForm = (props) => {
         fromUser: chatData.user,
         value: input,
         chatId: chatData.chatId,
+        isSeen: props.isCompanionOnline,
       })
     );
     setInput("");
