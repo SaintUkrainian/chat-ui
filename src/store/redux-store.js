@@ -26,6 +26,7 @@ const authSlice = createSlice({
       state.userId = null;
       state.firstName = "";
       state.lastName = "";
+      localStorage.clear();
     },
   },
 });

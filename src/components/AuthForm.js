@@ -6,7 +6,7 @@ import { authActions } from "../store/redux-store";
 import styles from "./css/LoginForm.module.css";
 import commonStyles from "./css/CommonStyles.module.css";
 
-const BASE_AUTH_URL = "http://localhost:8081/auth"
+const BASE_AUTH_URL = "http://localhost:8081/auth";
 const LOGIN_URL = BASE_AUTH_URL + "/login";
 const REGISTER_URL = BASE_AUTH_URL + "/register";
 const AuthForm = () => {
@@ -29,6 +29,26 @@ const AuthForm = () => {
     backgroundColor: "lightcoral",
   };
 
+  if (localStorage.getItem("isAuthenticated")) {
+    const usernameFromStorage = localStorage.getItem("username");
+    const passwordFromStorage = localStorage.getItem("password");
+
+    axios
+      .post(LOGIN_URL, {
+        username: usernameFromStorage,
+        password: passwordFromStorage,
+      })
+      .then((response) => {
+        dispatch(authActions.authenticate(response.data));
+      })
+      .catch((error) => {
+        setLoginFailed({
+          isFailed: true,
+          message: error.response.data.message,
+        });
+      });
+  }
+
   const handleLogin = (event) => {
     event.preventDefault();
     axios
@@ -38,6 +58,9 @@ const AuthForm = () => {
       })
       .then((response) => {
         dispatch(authActions.authenticate(response.data));
+        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
       })
       .catch((error) => {
         setLoginFailed({
@@ -59,6 +82,9 @@ const AuthForm = () => {
       })
       .then((response) => {
         dispatch(authActions.authenticate(response.data));
+        localStorage.setItem("isAuthenticated", true);
+        localStorage.setItem("username", username);
+        localStorage.setItem("password", password);
       })
       .catch((error) => {
         setRegistrationFailed({
