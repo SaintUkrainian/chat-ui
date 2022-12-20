@@ -27,8 +27,11 @@ const PrivateChat = (props) => {
       axios
         .get("http://localhost:8080/chat-messages/" + chatData.chatId)
         .then((response) => {
-          console.log(response.data);
-          setPrivateMessages(response.data);
+          const chatMsgs = response.data;
+          const unseenMsgsIdsToMe = chatMsgs
+            .filter((msg) => msg.fromUser.userId !== userId && !msg.isSeen)
+            .map((m) => m.messageId);
+          setPrivateMessages(chatMsgs);
           setIsMessagesFetched(true);
           stompClient.send(
             `/websocket-private-chat/messages-seen`,
@@ -40,6 +43,13 @@ const PrivateChat = (props) => {
             {},
             JSON.stringify({ value: "COMPANION_ONLINE" })
           );
+          if (unseenMsgsIdsToMe.length > 0) {
+            stompClient.send(
+              `/topic/private-chat/${chatData.chatId}/seen-messages/${chatData.chatWithUser.userId}`,
+              {},
+              JSON.stringify({ messagesIds: unseenMsgsIdsToMe })
+            );
+          }
         });
     }
     return () => {
@@ -126,6 +136,19 @@ const PrivateChat = (props) => {
     }
   };
 
+  const onMessagesSeenReceived = (payload) => {
+    const messagesIds = JSON.parse(payload.body).messagesIds;
+    setPrivateMessages((prevState) =>
+      prevState.map((msg) => {
+        if (messagesIds.includes(msg.messageId)) {
+          msg = { ...msg, isSeen: true };
+          console.log(msg);
+        }
+        return msg;
+      })
+    );
+  };
+
   if (!isSubscribed) {
     const subscriptions = [];
 
@@ -143,6 +166,11 @@ const PrivateChat = (props) => {
       stompClient.subscribe(
         `/topic/private-chat/${chatData.chatId}/delete-message`,
         onDeleteMessageReceived,
+        {}
+      ),
+      stompClient.subscribe(
+        `/topic/private-chat/${chatData.chatId}/seen-messages/${userId}`,
+        onMessagesSeenReceived,
         {}
       ),
       stompClient.subscribe(
@@ -180,7 +208,7 @@ const PrivateChat = (props) => {
           {},
           JSON.stringify({ value: "COMPANION_ONLINE" })
         );
-      }, 3000);
+      }, 1500);
     } else {
       interval = null;
     }
@@ -194,6 +222,9 @@ const PrivateChat = (props) => {
       <h4>
         Chat with {chatData.chatWithUser.firstName}{" "}
         {chatData.chatWithUser.lastName}
+        {isCompanionOnline ? (
+          <span style={{ color: "lightgreen" }}> (online in chat)</span>
+        ) : null}
       </h4>
       <div className={styles.messages} ref={parent}>
         {privateMessages.map((m) => (

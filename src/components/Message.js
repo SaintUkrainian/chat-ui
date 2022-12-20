@@ -15,7 +15,7 @@ const Message = (props) => {
   const discardChanges = () => {
     setNewMessageValue(message.value);
     setEditingMode(false);
-  }
+  };
 
   const endEditing = (event) => {
     event.preventDefault();
@@ -43,7 +43,8 @@ const Message = (props) => {
             <p className={styles.timestamp}>
               {new Date(message.sendTimestamp).toLocaleString()}
             </p>
-            {message.isEdited ? <p className={styles.edited}>| Edited</p> : null}
+            {message.isEdited ? <p className={styles.edited}>Edited</p> : null}
+            {message.isSeen ? <p className={styles.edited}>Seen</p> : null}
           </div>
         </div>
         <div>
@@ -62,7 +63,7 @@ const Message = (props) => {
         <div className={styles.messageValueOtherUser}>
           <p className={styles.message}>{message.value}</p>
           <div className={styles.msgMetainfo}>
-            {message.isEdited ? <p className={styles.edited}>Edited |</p> : null}
+            {message.isEdited ? <p className={styles.edited}>Edited</p> : null}
             <p className={styles.timestamp}>
               {new Date(message.sendTimestamp).toLocaleString()}
             </p>

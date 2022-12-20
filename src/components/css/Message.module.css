@@ -105,6 +105,8 @@
 
 .edited {
   margin: 0;
+  margin-right: 3pt;
+  text-decoration: underline;
 }
 
 .editArea {
