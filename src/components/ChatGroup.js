@@ -19,7 +19,7 @@ const ChatGroup = () => {
       style={{
         display: "flex",
         width: "100%",
-        justifyContent: "space-around"
+        justifyContent: "space-around",
       }}
     >
       <NavSection

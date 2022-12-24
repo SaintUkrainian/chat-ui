@@ -84,13 +84,20 @@ const ChatLink = (props) => {
 
   return (
     <li onClick={() => props.setCurrentChat(chat)} className={styles.contact}>
-      <h3 style={{ margin: "0", marginBottom: "2pt", fontWeight: "900" }}>
-        {chat.chatWithUser.firstName} {chat.chatWithUser.lastName}{" "}
-        {hasNewMessages ? (
-          <span className={styles.badge}>{unseenMessagesCount}</span>
-        ) : null}
-      </h3>
-      {latestMessageStyled}
+      <p className={styles.badge}>
+        {chat.chatWithUser.firstName
+          .substring(0, 1)
+          .concat(chat.chatWithUser.lastName.substring(0, 1))}
+      </p>
+      {hasNewMessages ? (
+        <span className={styles.badgeNotifications}>{unseenMessagesCount}</span>
+      ) : null}
+      <div className={styles.container}>
+        <h3 style={{ margin: "0", marginBottom: "2pt", fontWeight: "900" }}>
+          {chat.chatWithUser.firstName} {chat.chatWithUser.lastName}{" "}
+        </h3>
+        {latestMessageStyled}
+      </div>
     </li>
   );
 };

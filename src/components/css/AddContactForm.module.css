@@ -1,20 +1,21 @@
 .users {
   position: fixed;
   width: fit-content;
+  z-index: 200;
   min-width: 10rem;
   height: fit-content;
   min-height: 2rem;
   max-height: 50rem;
-  border-radius: 0 1.5rem 1.5rem 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: center;
   margin: auto;
-  margin-top: 1rem;
+  background-color: rgba(41, 26, 75, 0.823);
+  padding: 5pt;
+  border-radius: 10pt;
 }
 
 .addContactSection {
-    display: flexbox;
-    align-items: center;
+  display: flexbox;
+  align-items: center;
 }

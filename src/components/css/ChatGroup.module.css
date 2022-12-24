@@ -1,14 +1,20 @@
 .contacts {
-  padding: 1rem 1rem 1rem 1rem;
+  padding: 1rem;
   border-radius: 1rem;
   background-color: rgba(0, 110, 255, 0.8);
   box-shadow: 0 0 0.25rem #ccc;
   overflow-y: auto;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
 }
 
 .contacts li {
   list-style: none;
+  margin: auto;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
 }
 
 .logout {
@@ -46,9 +52,34 @@
   margin: 0.2rem;
   color: black;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   overflow-x: auto;
+}
+
+.contact .container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin: auto;
+  margin-left: 0;
+}
+
+.contact .badge {
+  box-sizing: border-box;
+  padding: 1rem 0.6rem 0.6rem 0.6rem;
+  margin: auto;
+  background: rgba(218, 153, 153, 0.37);
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  max-width: 80%;
+  font-size: 20px;
+  color: black;
+  box-shadow: 0 0 0.4rem #ccc;
+  text-align: center;
+  margin-right: 0.5rem;
+  margin-left: 0;
+  display: flex;
 }
 
 .contact p {
@@ -73,7 +104,7 @@
   color: white;
 }
 
-.badge {
+.badgeNotifications {
   box-sizing: border-box;
   position: absolute;
   width: 1.5rem;
@@ -84,5 +115,6 @@
   border-radius: 1rem;
   background: lightblue;
   color: darkblue;
-  margin-left: 2pt;
+  margin: auto;
+  margin-left: 2rem;
 }
