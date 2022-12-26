@@ -3,6 +3,8 @@ import styles from "./css/Message.module.css";
 
 const Message = (props) => {
   const message = props.message;
+  const otherUserImgElement = props.otherUserImgElement;
+  const myImgElement = props.myImgElement;
   const [editingMode, setEditingMode] = useState(false);
   const [newMessageValue, setNewMessageValue] = useState(message.value);
 
@@ -48,17 +50,25 @@ const Message = (props) => {
           </div>
         </div>
         <div>
-          <p className={styles.me}>
-            {message.fromUser.firstName.substring(0, 1)}
-          </p>
+          {myImgElement != null ? (
+            myImgElement
+          ) : (
+            <p className={styles.me}>
+              {message.fromUser.firstName.substring(0, 1)}
+            </p>
+          )}
         </div>
       </div>
     ) : (
       <div className={styles.messageContainerOtherUser}>
         <div>
-          <p className={styles.otherUser}>
-            {message.fromUser.firstName.substring(0, 1)}
-          </p>
+          {otherUserImgElement != null ? (
+            otherUserImgElement
+          ) : (
+            <p className={styles.otherUser}>
+              {message.fromUser.firstName.substring(0, 1)}
+            </p>
+          )}
         </div>
         <div className={styles.messageValueOtherUser}>
           <p className={styles.message}>{message.value}</p>
@@ -105,9 +115,13 @@ const Message = (props) => {
           </p>
         </div>
         <div>
-          <p className={styles.me}>
-            {message.fromUser.firstName.substring(0, 1)}
-          </p>
+          {myImgElement != null ? (
+            myImgElement
+          ) : (
+            <p className={styles.me}>
+              {message.fromUser.firstName.substring(0, 1)}
+            </p>
+          )}
         </div>
       </div>
     );

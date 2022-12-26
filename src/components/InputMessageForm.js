@@ -38,11 +38,12 @@ const InputMessageForm = (props) => {
       return;
     }
     console.log("IS_COMPNAION_ONLINE", props.isCompanionOnline);
+    const user = { ...chatData.user, userImage: null };
     stompClient.send(
       props.path,
       {},
       JSON.stringify({
-        fromUser: chatData.user,
+        fromUser: user,
         value: input,
         chatId: chatData.chatId,
         isSeen: props.isCompanionOnline,

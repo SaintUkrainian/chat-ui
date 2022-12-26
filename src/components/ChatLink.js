@@ -82,13 +82,31 @@ const ChatLink = (props) => {
     );
   }
 
-  return (
-    <li onClick={() => props.setCurrentChat(chat)} className={styles.contact}>
+  let badgeToDisplay = null;
+  let srcString = null;
+
+  if (chat.chatWithUser.userImage != null) {
+    const img = chat.chatWithUser.userImage;
+    srcString = `data:${img.type};base64,${img.data}`;
+    badgeToDisplay = <img src={srcString} className={styles.badgeImg}></img>;
+  } else {
+    badgeToDisplay = (
       <p className={styles.badge}>
         {chat.chatWithUser.firstName
           .substring(0, 1)
           .concat(chat.chatWithUser.lastName.substring(0, 1))}
       </p>
+    );
+  }
+
+  return (
+    <li
+      onClick={() => {
+        props.setCurrentChat(chat);
+      }}
+      className={styles.contact}
+    >
+      {badgeToDisplay}
       {hasNewMessages ? (
         <span className={styles.badgeNotifications}>{unseenMessagesCount}</span>
       ) : null}

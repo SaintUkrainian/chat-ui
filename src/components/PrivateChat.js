@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import InputMessageForm from "./InputMessageForm";
 import styles from "./css/PrivateChat.module.css";
+import chatGroupStyles from "./css/ChatGroup.module.css";
 import Message from "./Message";
 import Typing from "./Typing";
 
@@ -20,6 +21,9 @@ const PrivateChat = (props) => {
   const stompClient = chatData.stompClient;
   const userId = useSelector((state) => state.auth.userId);
   const messagesEndRef = React.createRef();
+
+  const [otherUserImgElement, setOtherUserImgElement] = useState(null);
+  const [myImgElement, setMyImgElement] = useState(null);
 
   useEffect(() => {
     if (!isMessagesFetched) {
@@ -217,6 +221,22 @@ const PrivateChat = (props) => {
     };
   });
 
+  if (chatData.chatWithUser.userImage != null && otherUserImgElement == null) {
+    const img = chatData.chatWithUser.userImage;
+    const srcString = `data:${img.type};base64,${img.data}`;
+    setOtherUserImgElement(
+      <img src={srcString} className={chatGroupStyles.badgeImg}></img>
+    );
+  }
+
+  if (chatData.user.userImage != null && myImgElement == null) {
+    const img = chatData.user.userImage;
+    const srcString = `data:${img.type};base64,${img.data}`;
+    setMyImgElement(
+      <img src={srcString} className={chatGroupStyles.badgeImg}></img>
+    );
+  }
+
   return (
     <div className={styles.chat}>
       <h4>
@@ -234,6 +254,8 @@ const PrivateChat = (props) => {
             isMyMessage={m.fromUser.userId === userId}
             editMessage={editMessage}
             deleteMessage={deleteMessage}
+            otherUserImgElement={otherUserImgElement}
+            myImgElement={myImgElement}
           />
         ))}
         <div ref={messagesEndRef} />

@@ -82,6 +82,18 @@
   display: flex;
 }
 
+.badgeImg {
+  box-sizing: border-box;
+  margin: auto;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  max-width: 80%;
+  box-shadow: 0 0 0.4rem #ccc;
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
 .contact p {
   color: rgb(141, 141, 141);
 }
