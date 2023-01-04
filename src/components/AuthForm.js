@@ -39,6 +39,7 @@ const AuthForm = () => {
         password: passwordFromStorage,
       })
       .then((response) => {
+        console.log(response.data);
         dispatch(authActions.authenticate(response.data));
       })
       .catch((error) => {

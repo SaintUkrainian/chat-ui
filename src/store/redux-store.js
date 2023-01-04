@@ -9,6 +9,7 @@ const authSlice = createSlice({
     userId: null,
     firstName: "",
     lastName: "",
+    userImage: null,
   },
   reducers: {
     authenticate(state, action) {
@@ -18,6 +19,7 @@ const authSlice = createSlice({
       state.userId = action.payload.userId;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
+      state.userImage = action.payload.userImage;
     },
     unauthenticate(state, action) {
       state.isAuthenticated = false;
@@ -26,6 +28,7 @@ const authSlice = createSlice({
       state.userId = null;
       state.firstName = "";
       state.lastName = "";
+      state.userImage = null;
       localStorage.clear();
     },
   },

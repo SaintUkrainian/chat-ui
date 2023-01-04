@@ -18,24 +18,23 @@
 }
 
 .logout {
-  border: none;
-  border-color: #ccc;
-  background-image: none;
-  background-color: rgb(219, 180, 50);
-  padding: 0.5rem 1rem;
-  border-radius: 1.125rem;
-  box-shadow: 0 0 0.25rem #ccc;
-  font-family: Red hat Display, sans-serif;
-  font-weight: 800;
-  height: 2rem;
-  margin: auto;
-  width: 5rem;
-  flex-grow: 0;
-  cursor: pointer;
+  display: inline-block;
+  padding: 0.6em 1.7em !important;
+  border: 0.1em solid coral;
+  margin: 0 0.3em 0.3em 0 !important;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+  background: none;
 }
 
 .logout:hover {
-  background-color: rgb(221, 240, 57);
+  color: #000000;
+  background-color: coral;
 }
 
 .contact {
@@ -129,4 +128,24 @@
   color: darkblue;
   margin: auto;
   margin-left: 2rem;
+}
+
+.profile {
+  display: inline-block;
+  padding: 0.6em 1.7em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  font-size: 14px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.profile:hover {
+  color: #000000;
+  background-color: #ffffff;
 }

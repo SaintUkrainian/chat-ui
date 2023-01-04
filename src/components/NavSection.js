@@ -11,6 +11,7 @@ import ChatLink from "./ChatLink";
 import styles from "./css/ChatGroup.module.css";
 import navStyles from "./css/NavSection.module.css";
 import Spinner from "./Spinner";
+import { Link } from "react-router-dom";
 
 const NavSection = (props) => {
   const notificationSockJs = useRef(
@@ -28,6 +29,7 @@ const NavSection = (props) => {
   const [isPopulatedWithChats, setIsPopulatedWithChats] = useState(false);
   const firstName = useSelector((state) => state.auth.firstName);
   const lastName = useSelector((state) => state.auth.lastName);
+  const userImage = useSelector((state) => state.auth.userImage);
 
   useEffect(() => {
     if (!isPopulatedWithChats) {
@@ -101,19 +103,55 @@ const NavSection = (props) => {
     }
   }
 
+  let myBadge = null;
+
+  if (userImage != null) {
+    const srcString = `data:${userImage.type};base64,${userImage.data}`;
+    myBadge = <img src={srcString} className={styles.badgeImg}></img>;
+  } else {
+    myBadge = (
+      <p className={styles.badge}>
+        {firstName.substring(0, 1).concat(lastName.substring(0, 1))}
+      </p>
+    );
+  }
+
   return (
     <div className={navStyles.navSection}>
       <div className={navStyles.navHeader}>
         <div style={{ display: "flex" }}>
-          <h2 style={{ margin: "0.7rem", padding: "0" }}>
-            {firstName} {lastName}
-          </h2>
-          <button
-            onClick={() => dispatch(authActions.unauthenticate())}
-            className={styles.logout}
+          <div
+            style={{
+              marginBottom: "0.8rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            Logout
-          </button>
+            {myBadge}
+            <h2
+              style={{
+                margin: "auto",
+                marginTop: "0.3rem",
+                marginBottom: "0.3rem",
+                padding: "0",
+                fontSize: "21px",
+              }}
+            >
+              {firstName} {lastName}
+            </h2>
+            <div>
+              <Link to={"/profile"} className={styles.profile}>
+                Profile
+              </Link>
+              <button
+                onClick={() => dispatch(authActions.unauthenticate())}
+                className={styles.logout}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
         <AddContactForm
           setPrivateChats={setPrivateChats}
