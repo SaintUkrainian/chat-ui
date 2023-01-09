@@ -31,6 +31,13 @@ const authSlice = createSlice({
       state.userImage = null;
       localStorage.clear();
     },
+    updateUserData(state, action) {
+      if (action.payload.userImage) {
+        state.userImage = action.payload.userImage;
+      }
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
+    },
   },
 });
 

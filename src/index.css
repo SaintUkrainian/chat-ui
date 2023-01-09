@@ -22,7 +22,8 @@ html {
   margin: 0;
 }
 
-input, textarea, button {
+input,
+textarea {
   border: none;
   background-image: none;
   background-color: white;
@@ -34,6 +35,31 @@ input, textarea, button {
   font-family: Red hat Display, sans-serif;
   font-weight: 600;
   letter-spacing: 0.025em;
+}
+
+input:disabled {
+  background-color: rgb(175, 175, 175);
+}
+
+button {
+  display: inline-block;
+  padding: 0.6em 1.7em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  font-size: 16px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: black;
+  text-align: center;
+  transition: all 0.2s;
+  background-color: none;
+}
+
+button:hover {
+  color: #000000;
+  background-color: #ffffff;
 }
 
 input {
@@ -49,12 +75,13 @@ button:hover {
   cursor: pointer;
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
   color: black;
 }
 
 .danger {
-   background-color: rgb(223, 105, 105);
+  background-color: rgb(223, 105, 105);
 }
 
 .danger:hover {
@@ -74,4 +101,24 @@ code {
 
 li {
   text-decoration: none;
+}
+
+a {
+  display: inline-block;
+  padding: 0.6em 1.7em;
+  border: 0.1em solid #ffffff;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  font-size: 16px;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+a:hover {
+  color: #000000;
+  background-color: #ffffff;
 }

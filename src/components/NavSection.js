@@ -12,6 +12,7 @@ import styles from "./css/ChatGroup.module.css";
 import navStyles from "./css/NavSection.module.css";
 import Spinner from "./Spinner";
 import { Link } from "react-router-dom";
+import { createUserImage } from "./ImageUtils";
 
 const NavSection = (props) => {
   const notificationSockJs = useRef(
@@ -128,7 +129,11 @@ const NavSection = (props) => {
               alignItems: "center",
             }}
           >
-            {myBadge}
+            {createUserImage({
+              userImage: userImage,
+              firstName: firstName,
+              lastName: lastName,
+            })}
             <h2
               style={{
                 margin: "auto",
@@ -144,12 +149,13 @@ const NavSection = (props) => {
               <Link to={"/profile"} className={styles.profile}>
                 Profile
               </Link>
-              <button
+              <a
+                href=""
                 onClick={() => dispatch(authActions.unauthenticate())}
                 className={styles.logout}
               >
                 Logout
-              </button>
+              </a>
             </div>
           </div>
         </div>
