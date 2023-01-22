@@ -7,6 +7,7 @@ import styles from "./css/PrivateChat.module.css";
 import chatGroupStyles from "./css/ChatGroup.module.css";
 import Message from "./Message";
 import Typing from "./Typing";
+import { createUserImage } from "./ImageUtils";
 
 const PrivateChat = (props) => {
   const [parent] = useAutoAnimate();
@@ -23,7 +24,9 @@ const PrivateChat = (props) => {
   const messagesEndRef = React.createRef();
 
   const [otherUserImgElement, setOtherUserImgElement] = useState(null);
-  const [myImgElement, setMyImgElement] = useState(null);
+  const [myImgElement, setMyImgElement] = useState(
+    createUserImage(useSelector((state) => state.auth))
+  );
 
   useEffect(() => {
     if (!isMessagesFetched) {
@@ -225,14 +228,6 @@ const PrivateChat = (props) => {
     const img = chatData.chatWithUser.userImage;
     const srcString = `data:${img.type};base64,${img.data}`;
     setOtherUserImgElement(
-      <img src={srcString} className={chatGroupStyles.badgeImg}></img>
-    );
-  }
-
-  if (chatData.user.userImage != null && myImgElement == null) {
-    const img = chatData.user.userImage;
-    const srcString = `data:${img.type};base64,${img.data}`;
-    setMyImgElement(
       <img src={srcString} className={chatGroupStyles.badgeImg}></img>
     );
   }
