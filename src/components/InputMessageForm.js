@@ -7,7 +7,7 @@ const InputMessageForm = (props) => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isTypingEventSent, setIsTypingEventSent] = useState(false);
-  const userId = useSelector((state) => state.auth.userId);
+  const user = useSelector((state) => state.auth);
   const chatData = props.chatData;
   const stompClient = props.stompClient;
 
@@ -20,7 +20,7 @@ const InputMessageForm = (props) => {
     } else if (!isTyping && isTypingEventSent) {
       timeout = setTimeout(() => {
         stompClient.send(
-          `/topic/private-chat/${chatData.chatId}/typing/${userId}`,
+          `/topic/private-chat/${chatData.chatId}/typing/${user.userId}`,
           {},
           JSON.stringify({ eventValue: "STOPPED_TYPING" })
         );
@@ -38,12 +38,12 @@ const InputMessageForm = (props) => {
       return;
     }
     console.log("IS_COMPNAION_ONLINE", props.isCompanionOnline);
-    const user = { ...chatData.user, userImage: null };
+    const userCopied = { ...user, userImage: null };
     stompClient.send(
       props.path,
       {},
       JSON.stringify({
-        fromUser: user,
+        fromUser: userCopied,
         value: input,
         chatId: chatData.chatId,
         isSeen: props.isCompanionOnline,
@@ -55,7 +55,7 @@ const InputMessageForm = (props) => {
   const handleTyping = (event) => {
     if (!isTypingEventSent) {
       stompClient.send(
-        `/topic/private-chat/${chatData.chatId}/typing/${userId}`,
+        `/topic/private-chat/${chatData.chatId}/typing/${user.userId}`,
         {},
         JSON.stringify({ eventValue: "STARTED_TYPING" })
       );
