@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import styles from "./css/ChatGroup.module.css";
+import { createUserImage } from "./ImageUtils";
 
 const ChatLink = (props) => {
   const CHAT_MESSAGES_BASE_URL = "http://localhost:8080/chat-messages/";
@@ -82,22 +83,7 @@ const ChatLink = (props) => {
     );
   }
 
-  let badgeToDisplay = null;
-  let srcString = null;
-
-  if (chat.chatWithUser.userImage != null) {
-    const img = chat.chatWithUser.userImage;
-    srcString = `data:${img.type};base64,${img.data}`;
-    badgeToDisplay = <img src={srcString} className={styles.badgeImg}></img>;
-  } else {
-    badgeToDisplay = (
-      <p className={styles.badge}>
-        {chat.chatWithUser.firstName
-          .substring(0, 1)
-          .concat(chat.chatWithUser.lastName.substring(0, 1))}
-      </p>
-    );
-  }
+  let badgeToDisplay = createUserImage(chat.chatWithUser);
 
   return (
     <li
