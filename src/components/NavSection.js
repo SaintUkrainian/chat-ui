@@ -47,9 +47,21 @@ const NavSection = (props) => {
     }
   });
 
+  const onDeleteChatReceived = (payload) => {
+    setPrivateChats((prevState) =>
+      prevState.filter((chat) => chat.chatId != payload.body)
+    );
+    props.setCurrentChat(null);
+  };
+
   const onConnected = () => {
     console.log("Successfuly connected!");
     stompClient.subscribe("/topic/new-chat/" + userId, onNewChatReceived, {});
+    stompClient.subscribe(
+      "/topic/delete-chat/" + userId,
+      onDeleteChatReceived,
+      {}
+    );
   };
 
   const onNewChatReceived = (payload) => {
@@ -102,19 +114,6 @@ const NavSection = (props) => {
         <li style={{ color: "white", weight: "1000" }}>Connection failed</li>
       );
     }
-  }
-
-  let myBadge = null;
-
-  if (userImage != null) {
-    const srcString = `data:${userImage.type};base64,${userImage.data}`;
-    myBadge = <img src={srcString} className={styles.badgeImg}></img>;
-  } else {
-    myBadge = (
-      <p className={styles.badge}>
-        {firstName.substring(0, 1).concat(lastName.substring(0, 1))}
-      </p>
-    );
   }
 
   return (

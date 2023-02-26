@@ -156,6 +156,22 @@ const PrivateChat = (props) => {
     );
   };
 
+  const deleteChat = () => {
+    if (window.confirm("Are you sure?")) {
+      const chatRequest = {
+        chatId: chatData.chatId,
+        fromUserId: userId,
+        toUserId: chatData.chatWithUser.userId,
+      };
+
+      stompClient.send(
+        "/websocket-delete-chat",
+        {},
+        JSON.stringify(chatRequest)
+      );
+    }
+  };
+
   if (!isSubscribed) {
     const subscriptions = [];
 
@@ -234,13 +250,19 @@ const PrivateChat = (props) => {
 
   return (
     <div className={styles.chat}>
-      <h4>
-        Chat with {chatData.chatWithUser.firstName}{" "}
-        {chatData.chatWithUser.lastName}
-        {isCompanionOnline ? (
-          <span style={{ color: "lightgreen" }}> (online in chat)</span>
-        ) : null}
-      </h4>
+      <div>
+        <h4>
+          Chat with {chatData.chatWithUser.firstName}{" "}
+          {chatData.chatWithUser.lastName}
+          {isCompanionOnline ? (
+            <span style={{ color: "lightgreen" }}> (online in chat)</span>
+          ) : null}
+        </h4>
+        <button className={styles.deleteChatBtn} onClick={() => deleteChat()}>
+          Delete Chat
+        </button>
+      </div>
+
       <div className={styles.messages} ref={parent}>
         {privateMessages.map((m) => (
           <Message

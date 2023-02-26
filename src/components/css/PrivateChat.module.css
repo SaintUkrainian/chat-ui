@@ -11,19 +11,21 @@
 }
 
 .messages::-webkit-scrollbar-track {
-	border-radius: 20px;
+  border-radius: 20px;
 }
 .messages::-webkit-scrollbar {
   width: 10px;
 }
 .messages::-webkit-scrollbar-thumb {
   border-radius: 20px;
-	background-image: -webkit-gradient(linear,
-									   left bottom,
-									   left top,
-									   color-stop(0.44, rgb(136, 12, 185)),
-									   color-stop(0.72, rgb(118, 6, 133)),
-									   color-stop(0.86, rgb(134, 8, 128)));
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, rgb(136, 12, 185)),
+    color-stop(0.72, rgb(118, 6, 133)),
+    color-stop(0.86, rgb(134, 8, 128))
+  );
 }
 
 .chat {
@@ -37,4 +39,25 @@
   border-radius: 1rem;
   background: rgba(78, 32, 202, 0.4);
   box-shadow: 0 0 0.25rem #ccc;
+}
+
+.deleteChatBtn {
+  margin-left: 80%;
+  display: inline-block;
+  padding: 0.6em 1.7em;
+  border: 0.1em solid coral;
+  border-radius: 0.12em;
+  font-size: 16px;
+  box-sizing: border-box;
+  text-decoration: none;
+  background: none;
+  font-weight: 300;
+  color: #ffffff;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.deleteChatBtn:hover {
+  color: #000000;
+  background-color: coral;
 }
