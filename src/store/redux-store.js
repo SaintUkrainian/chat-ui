@@ -35,8 +35,12 @@ const authSlice = createSlice({
       if (action.payload.userImage) {
         state.userImage = action.payload.userImage;
       }
-      state.firstName = action.payload.firstName;
-      state.lastName = action.payload.lastName;
+      if (action.payload.firstName) {
+        state.firstName = action.payload.firstName;
+      }
+      if (action.payload.lastName) {
+        state.lastName = action.payload.lastName;
+      }
     },
   },
 });
